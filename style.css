@@ -30,6 +30,7 @@ header {
     background-color: #a9dcff;
     padding: 5px 20px;
     border-radius: 5px;
+    cursor: pointer;
 }
 .menu-openner span {
     margin-right:10px;
@@ -47,6 +48,7 @@ aside {
     font-family:'Hepta Slab', Helvetica, Arial;
     transition:all ease .2s;
     overflow-x:hidden;
+    
 }
 aside.show {
     width:30vw;
@@ -338,7 +340,7 @@ h1 {
     }
 }
 
-@media (max-width:840px) {
+@media (max-width:640px) {
     body {
         flex-direction: column;
     }
@@ -355,10 +357,10 @@ h1 {
         padding-top:60px;
     }
 
-    aside {
-        width:auto;
+    aside{
+        width: 70vh;
         position:fixed;
-        left:100vw;
+        left: 100vw;
         right:0;
         top:0;
         bottom:0;
@@ -373,6 +375,7 @@ h1 {
 
     .menu-closer {
         display:block;
+        cursor: pointer;
     }
 
     .pizzaWindowArea {

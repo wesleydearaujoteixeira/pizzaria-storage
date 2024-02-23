@@ -3,7 +3,7 @@ const Item = (el) => document.querySelector(el)
 const Itens = (els) => document.querySelectorAll(els)
 
 let cart = []
-let item = 0
+let sabor = 0
 let quantity = 1
 
 pizzaJson.map((item, index) => {
@@ -22,7 +22,7 @@ pizzaJson.map((item, index) => {
 
         let key = event.target.closest('.pizza-item').dataset.index
         quantity = 1
-        qtd = key
+        sabor = key
 
 
         Item('.pizzaInfo > h1 ' ).innerHTML = pizzaJson[key].name
@@ -117,26 +117,38 @@ Itens('.pizzaInfo--size').forEach((item) => {
 
 
 Item('.pizzaInfo--addButton').addEventListener('click', () => {
-    CloseModel();
-    Item('aside').classList.add('show')
 
-    let size = parseFloat(Item('.pizzaInfo--size.selected').dataset.key);
 
-   let identifier = pizzaJson[item].id+'@'+size
+    let size = Number(Item('.pizzaInfo--size.selected').dataset.key);
 
-    const key = cart.findIndex((item) => item.identifier == identifier)
+    /*
+
+    console.log('Item ' + sabor)
+    console.log('Tamanho ' + size)
+    console.log('Quantidade ' + quantity)
+    */
+
+
     
-    if(key > -1) { // significa que já possui uma identificação portanto irá somar com o novo quantity.
-        cart[key].qtd += quantity
-    }else{
-        cart.push({ // agora é -1 então ele da push na nova quantidade a ser adicionada. 
-            identifier,
-            id: pizzaJson[item].id,
-            size,
-            qtd: quantity
-        })
-    }    
+
+   let identifier = pizzaJson[sabor].id+'@'+ size
+
+    let low = cart.findIndex((item) => item.identifier == identifier)
+
+        if (low > -1) {
+            cart[low].qtd += quantity;
+        } else {
+            cart.push({
+                identifier,
+                id: pizzaJson[sabor],
+                size,
+                qtd: quantity,
+            });
+        }
+   
     
+    
+    /*
     Item('.menu-openner').innerHTML = quantity
 
     Item('.TotalReais').innerHTML = `R$ ${pizzaJson[qtd].price * quantity}`
@@ -150,15 +162,107 @@ Item('.pizzaInfo--addButton').addEventListener('click', () => {
 
     Item('.Desconto').innerHTML = `R$ ${desc.toFixed(2)} `
     Item('.valorTotal').innerHTML = `R$ ${valorTotal.toFixed(2)}`
+    */
 
 
-
-
-
-
-
-
+    UpdateCart()
+    CloseModel();
 
     
 });
 
+    
+Item('.menu-openner').addEventListener('click', () => {
+    if (cart.length > 0) {
+        Item('aside').style.left = '0vw' 
+    }   
+    
+});
+
+
+Item('.menu-closer').addEventListener('click', () => {
+
+    Item('aside').style.left = '100vw' 
+
+});
+
+
+function UpdateCart() {
+    if(cart.length > 0) {
+        Item('aside').classList.add('show');
+
+        Item('.cart').innerHTML = ''
+
+
+
+        let subtotal = 0
+        let total = 0
+        let desconto = 0
+
+
+
+        for(let i in cart) {
+
+            let newr = cart.find((item) => item.id == cart[i].id)
+
+            subtotal += cart[i].id.price * cart[i].qtd
+
+            console.log(subtotal)
+            
+            let cartItem = Item('.cart--item').cloneNode(true);
+
+            let pizzaNewSize = ''
+
+            switch(cart[i].size){
+                case 0:
+                    pizzaNewSize = 'P'
+                    break
+                case 1:
+                    pizzaNewSize = 'M'
+                    break
+                case 2:
+                    pizzaNewSize = 'G'
+
+            }
+
+            cartItem.querySelector('img').src = newr.id.img
+            cartItem.querySelector('.cart--item-nome').innerHTML = newr.id.name + ' ' + pizzaNewSize
+            cartItem.querySelector('.cart--item--qt').innerHTML = cart[i].qtd
+
+
+            cartItem.querySelector('.cart--item-qtmenos').addEventListener('click', () => {
+              
+                if(cart[i].qtd > 1 ){
+                    cart[i].qtd--
+                }else {
+                    cart.splice(i, 1)
+                }
+                UpdateCart()
+            });
+
+            cartItem.querySelector('.cart--item-qtmais').addEventListener('click', () => {
+                cart[i].qtd++
+                UpdateCart()
+
+            })
+
+            Item('.cart').append(cartItem);
+
+        }
+
+        desconto = subtotal * 0.1
+        total = subtotal - desconto
+        
+
+        Item('#subtotal').innerHTML = `R$ ${subtotal.toFixed(2)}`
+        Item('#desconto').innerHTML = `R$ ${desconto.toFixed(2)}`
+        Item(`#total`).innerHTML = `R$ ${total.toFixed(2)}`
+       
+
+    }else {
+        Item('aside').classList.remove('show')
+        Item('aside').style.left = '100vw' 
+
+
+    }
+}
