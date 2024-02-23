@@ -151,6 +151,7 @@ Item('.menu-openner').addEventListener('click', () => {
 
 Item('.menu-closer').addEventListener('click', () => {
 
+    Item('aside').classList.remove('show')
     Item('aside').style.left = '100vw' 
 
 });
@@ -233,4 +234,4 @@ function UpdateCart() {
 
 
     }
-}
+}       
