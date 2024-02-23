@@ -5,7 +5,7 @@ const Itens = (els) => document.querySelectorAll(els)
 let cart = []
 let sabor = 0
 let quantity = 1
-let cont = 1
+
 pizzaJson.map((item, index) => {
     let pizzaItem =  Item('.pizza-item').cloneNode(true);
     
@@ -97,7 +97,10 @@ Item('.pizzaInfo--qtmenos').addEventListener('click', () => {
 
 
 Item('.cart--finalizar').addEventListener('click', () => {
-    Item('aside').classList.remove('show')
+    alert('Obrigado, volte sempre!!!')
+    Item('aside').style.left = '100vw' 
+
+
 });
 
 
