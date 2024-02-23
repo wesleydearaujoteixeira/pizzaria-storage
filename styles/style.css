@@ -38,8 +38,9 @@ header {
 .menu-closer {
     width:32px;
     height:32px;
-    display:none;
+    display: block;
     font-size: 30px;
+    cursor: pointer;
 }
 
 aside {
