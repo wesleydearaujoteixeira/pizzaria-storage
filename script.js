@@ -5,7 +5,7 @@ const Itens = (els) => document.querySelectorAll(els)
 let cart = []
 let sabor = 0
 let quantity = 1
-
+let cont = 1
 pizzaJson.map((item, index) => {
     let pizzaItem =  Item('.pizza-item').cloneNode(true);
     
@@ -80,9 +80,6 @@ Item('.pizzaInfo--cancelButton').addEventListener('click', CloseModel);
 Item('.pizzaInfo--cancelMobileButton').addEventListener('click', CloseModel);
 
 
-
-
-
 Item('.pizzaInfo--qtmais').addEventListener('click', () => {
     quantity++
     Item('.pizzaInfo--qt').innerHTML = quantity
@@ -120,15 +117,6 @@ Item('.pizzaInfo--addButton').addEventListener('click', () => {
 
 
     let size = Number(Item('.pizzaInfo--size.selected').dataset.key);
-
-    /*
-
-    console.log('Item ' + sabor)
-    console.log('Tamanho ' + size)
-    console.log('Quantidade ' + quantity)
-    */
-
-
     
 
    let identifier = pizzaJson[sabor].id+'@'+ size
@@ -146,27 +134,8 @@ Item('.pizzaInfo--addButton').addEventListener('click', () => {
             });
         }
    
-    
-    
-    /*
-    Item('.menu-openner').innerHTML = quantity
-
-    Item('.TotalReais').innerHTML = `R$ ${pizzaJson[qtd].price * quantity}`
-
-    const reais = pizzaJson[qtd].price * quantity
-    const percent = reais - (reais * (10/100))
-    const desc = reais - percent
-
-    const valorTotal = reais - desc
-
-
-    Item('.Desconto').innerHTML = `R$ ${desc.toFixed(2)} `
-    Item('.valorTotal').innerHTML = `R$ ${valorTotal.toFixed(2)}`
-    */
-
-
-    UpdateCart()
     CloseModel();
+    UpdateCart()
 
     
 });
@@ -187,19 +156,17 @@ Item('.menu-closer').addEventListener('click', () => {
 });
 
 
+
+
 function UpdateCart() {
     if(cart.length > 0) {
         Item('aside').classList.add('show');
 
         Item('.cart').innerHTML = ''
 
-
-
         let subtotal = 0
         let total = 0
         let desconto = 0
-
-
 
         for(let i in cart) {
 
@@ -225,9 +192,11 @@ function UpdateCart() {
 
             }
 
+            Item('#result').innerHTML = cart.length
             cartItem.querySelector('img').src = newr.id.img
             cartItem.querySelector('.cart--item-nome').innerHTML = newr.id.name + ' ' + pizzaNewSize
             cartItem.querySelector('.cart--item--qt').innerHTML = cart[i].qtd
+
 
 
             cartItem.querySelector('.cart--item-qtmenos').addEventListener('click', () => {
@@ -257,7 +226,6 @@ function UpdateCart() {
         Item('#subtotal').innerHTML = `R$ ${subtotal.toFixed(2)}`
         Item('#desconto').innerHTML = `R$ ${desconto.toFixed(2)}`
         Item(`#total`).innerHTML = `R$ ${total.toFixed(2)}`
-       
 
     }else {
         Item('aside').classList.remove('show')
